@@ -1,6 +1,6 @@
 {
-  "name": "sutdcv",
-  "homepage": "https://status.markhh.com",
+  "name": "mxstatus",
+  "homepage": "https://status.mxshell.dev",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
