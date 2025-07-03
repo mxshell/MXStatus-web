@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import SingleIP from './SingleIP'
 
-const IP = props => {
+const InfoInterfaces = props => {
     return (
         <div style={{
             marginBottom: '0.75rem',
@@ -22,7 +22,7 @@ const IP = props => {
                     fontSize: '0.8rem',
                     fontWeight: '500'
                 }}>
-                    Private IP Address:
+                    Interfaces:
                 </span>
                 {props.data.map((ip, index) => {
                     if (ip[0] === 'lo' || ip[0] === 'docker0' || ip[0] === 'tailscale0') {
@@ -39,14 +39,14 @@ const IP = props => {
     )
 }
 
-IP.propTypes = {
+InfoInterfaces.propTypes = {
     data: PropTypes.array,
     onClick: PropTypes.func
 }
 
-IP.defaultProps = {
+InfoInterfaces.defaultProps = {
     data: [],
     onClick: () => { }
 }
 
-export default IP
+export default InfoInterfaces

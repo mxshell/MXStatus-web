@@ -51,7 +51,7 @@ const CopyableText = ({ children, className, style, showCopyIcon = true, maxLeng
                     opacity: 0.7,
                     transition: 'opacity 0.2s ease'
                 }}>
-                    📋
+                    copy
                 </span>
             )
         }

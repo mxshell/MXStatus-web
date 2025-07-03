@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import IP from './IP'
+import InfoInterfaces from './InfoInterfaces'
 import GpuCard from './GpuCard'
 import UsersLine from './UsersLine'
 import DisplayPercent from './DisplayPercent'
 import DisplayRAM from './DisplayRAM'
 import CopyableText from './CopyableText'
+import InfoCPU from './InfoCPU'
 
 const MachineCard = props => {
 
@@ -179,73 +180,54 @@ const MachineCard = props => {
                 </div>
             </div>
 
+            <div className="row">
+                <div className="col-md-6">
+                    <p className="mb-1">
+                        <span style={{ color: 'var(--hacker-text-secondary)' }}>Last seen:</span>
+                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                            {getTimestamp()}
+                        </CopyableText>
+                    </p>
+                    <p className="mb-1">
+                        <span style={{ color: 'var(--hacker-text-secondary)' }}>Uptime:</span>
+                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                            {props.data.uptime_str}
+                        </CopyableText>
+                    </p>
+                </div>
+                <div className="col-md-6">
+                    <p className="mb-1">
+                        <span style={{ color: 'var(--hacker-text-secondary)' }}>Arch:</span>
+                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                            {props.data.architecture}
+                        </CopyableText>
+                    </p>
+                    <p className="mb-1">
+                        <span style={{ color: 'var(--hacker-text-secondary)' }}>System:</span>
+                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                            {props.data.linux_distro}
+                        </CopyableText>
+                    </p>
+                </div>
+            </div>
+
             <div className={`details-anim${showDetails ? ' expanded' : ' collapsed'}`}>
                 <div className="server-details" style={{
                     borderTop: '1px solid var(--hacker-border)',
                     paddingTop: '0.75rem',
                     marginTop: '0.75rem'
                 }}>
-                    <div className="row mb-2">
-                        <div className="col-md-6">
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>Last seen:</span>
-                                <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                                    {getTimestamp()}
-                                </CopyableText>
-                            </p>
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>Uptime:</span>
-                                <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                                    {props.data.uptime_str}
-                                </CopyableText>
-                            </p>
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>Arch:</span>
-                                <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                                    {props.data.architecture}
-                                </CopyableText>
-                            </p>
-                        </div>
-                        <div className="col-md-6">
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>System:</span>
-                                <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                                    {props.data.linux_distro}
-                                </CopyableText>
-                            </p>
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>CPU:</span>
-                                <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                                    {props.data.cpu_model}
-                                </CopyableText>
-                            </p>
-                        </div>
-                    </div>
 
-                    <IP data={props.data.ipv4s} onClick={handleInteractiveClick} />
+
+                    <InfoCPU data={{
+                        cpu_model: props.data.cpu_model,
+                        cpu_usage: props.data.cpu_usage,
+                        ram_usage: props.data.ram_usage,
+                        ram_free: props.data.ram_free,
+                        ram_total: props.data.ram_total
+                    }} />
+                    <InfoInterfaces data={props.data.ipv4s} onClick={handleInteractiveClick} />
                     <UsersLine users_info={props.data.users_info} onClick={handleInteractiveClick} />
-
-                    <div className="row mt-2">
-                        <div className="col-md-6">
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>CPU Util:</span>
-                                <span className="hacker-badge ms-2">
-                                    <DisplayPercent percent={props.data.cpu_usage} />
-                                </span>
-                            </p>
-                        </div>
-                        <div className="col-md-6">
-                            <p className="mb-1">
-                                <span style={{ color: 'var(--hacker-text-secondary)' }}>RAM Util:</span>
-                                <span className="hacker-badge ms-2">
-                                    <DisplayPercent percent={props.data.ram_usage} />
-                                </span>
-                                <span className="hacker-badge ms-2" style={{ fontSize: '0.65rem' }}>
-                                    <DisplayRAM ram={props.data.ram_free} /> / <DisplayRAM ram={props.data.ram_total} />
-                                </span>
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </div>
 

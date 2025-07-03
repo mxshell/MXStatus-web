@@ -9,7 +9,7 @@ const SingleIP = props => {
             alignItems: 'center',
             margin: '0 0.25rem'
         }}>
-            <span style={{
+            <CopyableText style={{
                 padding: '0.25rem 0.5rem',
                 borderRadius: '0.25rem 0 0 0.25rem',
                 fontSize: '0.75rem',
@@ -17,10 +17,13 @@ const SingleIP = props => {
                 color: 'var(--hacker-text-secondary)',
                 border: '1px solid var(--hacker-border)',
                 borderRight: 'none',
-                backgroundColor: 'var(--hacker-surface)'
-            }}>
+                backgroundColor: 'var(--hacker-surface)',
+                userSelect: 'all',
+                cursor: 'pointer',
+                transition: 'var(--hacker-transition)'
+            }} onClick={props.onClick}>
                 {props.name}
-            </span>
+            </CopyableText>
             <CopyableText style={{
                 padding: '0.25rem 0.5rem',
                 borderRadius: '0 0.25rem 0.25rem 0',
