@@ -5,7 +5,7 @@ import DisplayTemp from './DisplayTemp'
 import DisplayRAM from './DisplayRAM'
 import CopyableText from './CopyableText'
 
-const GPUv2 = props => {
+const GpuCard = props => {
     const getUtilizationColor = (percent) => {
         if (percent < 0.3) return 'var(--hacker-info)'
         if (percent < 0.7) return 'var(--hacker-warning)'
@@ -279,11 +279,11 @@ const GPUv2 = props => {
     )
 }
 
-GPUv2.propTypes = {
+GpuCard.propTypes = {
     "data": PropTypes.object
 }
 
-GPUv2.defaultProps = {
+GpuCard.defaultProps = {
     "data": {
         "index": 0,
         "gpu_name": "GeForce RTX xxxx xx",
@@ -295,4 +295,4 @@ GPUv2.defaultProps = {
     }
 }
 
-export default GPUv2
+export default GpuCard

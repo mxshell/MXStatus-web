@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 
 // import Workstation from "./Workstation"
-import WorkstationV2 from "./WorkstationV2"
+import MachineCard from "./MachineCard"
 
 import axios from "axios";
 
@@ -1089,7 +1089,7 @@ const PageMain = () => {
                             <div className="servers-grid">
                                 {
                                     filteredMachines.map((data, index) => {
-                                        return <WorkstationV2 data={data} key={index} />
+                                        return <MachineCard data={data} key={index} />
                                     })
                                 }
                             </div>

@@ -95,7 +95,7 @@
   padding: 0.75rem;
   margin-bottom: 0.75rem;
   transition: var(--hacker-transition);
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .hacker-card:hover {
@@ -1058,4 +1058,19 @@ footer {
 footer:hover {
   background-color: rgba(0, 255, 65, 0.02);
   border-radius: 0.25rem;
+}
+
+.details-anim {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+.details-anim.expanded {
+  max-height: 1000px;
+  opacity: 1;
+}
+.details-anim.collapsed {
+  max-height: 0;
+  opacity: 0;
 }

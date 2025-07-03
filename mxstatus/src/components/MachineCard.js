@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import IP from './IP'
-import GPUv2 from './GPUv2'
+import GpuCard from './GpuCard'
 import UsersLine from './UsersLine'
 import DisplayPercent from './DisplayPercent'
 import DisplayRAM from './DisplayRAM'
 import CopyableText from './CopyableText'
 
-const WorkstationV2 = props => {
+const MachineCard = props => {
 
     // const secondsToHms = (d) => {
     //     d = Number(d);
@@ -86,15 +86,6 @@ const WorkstationV2 = props => {
         })
     }
 
-    // Handle card click to toggle details
-    const handleCardClick = (e) => {
-        // Don't toggle if clicking on interactive elements
-        if (e.target.closest('button') || e.target.closest('.CopyableText') || e.target.closest('input') || e.target.closest('.process-item')) {
-            return
-        }
-        handleShowDetails()
-    }
-
     // Handle click on interactive elements to prevent bubbling
     const handleInteractiveClick = (e) => {
         e.stopPropagation()
@@ -127,7 +118,7 @@ const WorkstationV2 = props => {
         <div className="hacker-card fade-in" style={{
             borderLeft: `4px solid ${getStatusColor()}`,
             opacity: isOnline() ? 1 : 0.7
-        }} onClick={handleCardClick}>
+        }} >
             <div className="server-header d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center gap-2">
                     <h3 className="mb-0" style={{
@@ -183,12 +174,12 @@ const WorkstationV2 = props => {
                             background: 'transparent'
                         }}
                     >
-                        {showDetails ? 'HIDE' : 'DETAILS'}
+                        {showDetails ? 'HIDE DETAILS' : 'DETAILS'}
                     </button>
                 </div>
             </div>
 
-            {showDetails && (
+            <div className={`details-anim${showDetails ? ' expanded' : ' collapsed'}`}>
                 <div className="server-details" style={{
                     borderTop: '1px solid var(--hacker-border)',
                     paddingTop: '0.75rem',
@@ -256,11 +247,11 @@ const WorkstationV2 = props => {
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
 
             {isEmpty(props.data.gpu_status) || !showDetails ? null :
                 <div className="gpu-section mt-2">
-                    {props.data.gpu_status.map((gpu_data, idx) => <GPUv2 key={idx} data={gpu_data} />)}
+                    {props.data.gpu_status.map((gpu_data, idx) => <GpuCard key={idx} data={gpu_data} />)}
                 </div>
             }
 
@@ -610,14 +601,14 @@ const WorkstationV2 = props => {
     )
 }
 
-WorkstationV2.propTypes = {
+MachineCard.propTypes = {
     "data": PropTypes.object,
 }
 
-WorkstationV2.defaultProps = {
+MachineCard.defaultProps = {
     "data": {
         "gpu_status": []
     }
 }
 
-export default WorkstationV2
+export default MachineCard
