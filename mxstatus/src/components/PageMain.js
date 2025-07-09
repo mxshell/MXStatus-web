@@ -1132,9 +1132,9 @@ const PageMain = () => {
                         </>
                     )}
 
-                    <p className="my-3 text-success">
+                    {/* <p className="my-3 text-success">
                         <pre className="prettyprint">{JSON.stringify(dataSnapshot, null, 4)}</pre>
-                    </p>
+                    </p> */}
 
                 </div>
             )}
