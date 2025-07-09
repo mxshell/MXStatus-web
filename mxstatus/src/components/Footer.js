@@ -1,6 +1,9 @@
 import React from 'react'
 
 const Footer = () => {
+
+    const currentYear = new Date().getFullYear();
+
     return (
         <footer style={{
             marginTop: '3rem',
@@ -11,7 +14,7 @@ const Footer = () => {
             fontSize: '0.9rem',
             fontFamily: 'var(--hacker-font-mono)'
         }}>
-            <p>MXStatus © 2025. All rights reserved.</p>
+            <p>MXStatus © {currentYear}. All rights reserved.</p>
         </footer>
     )
 }

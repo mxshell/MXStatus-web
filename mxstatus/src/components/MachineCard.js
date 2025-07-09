@@ -4,8 +4,8 @@ import { useState } from 'react'
 import InfoInterfaces from './InfoInterfaces'
 import GpuCard from './GpuCard'
 import UsersLine from './UsersLine'
-import DisplayPercent from './DisplayPercent'
-import DisplayRAM from './DisplayRAM'
+// import DisplayPercent from './DisplayPercent'
+// import DisplayRAM from './DisplayRAM'
 import CopyableText from './CopyableText'
 import InfoCPU from './InfoCPU'
 
@@ -133,7 +133,7 @@ const MachineCard = props => {
                         lineHeight: '1.2',
                         letterSpacing: '0.025em'
                     }}>
-                        {props.data.hostname}
+                        {props.data.name}
                     </h3>
                 </div>
 
@@ -201,6 +201,13 @@ const MachineCard = props => {
                                 {props.data.uptime_str}
                             </CopyableText>
                         </p>
+                        <p className="mb-1">
+                            <span style={{ color: 'var(--hacker-text-secondary)' }}>Hostname:</span>
+                            <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                                {props.data.hostname}
+                            </CopyableText>
+                        </p>
+
                     </div>
                     <div className="col-md-6">
                         <p className="mb-1">
@@ -213,6 +220,12 @@ const MachineCard = props => {
                             <span style={{ color: 'var(--hacker-text-secondary)' }}>System:</span>
                             <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
                                 {props.data.linux_distro}
+                            </CopyableText>
+                        </p>
+                        <p className="mb-1">
+                            <span style={{ color: 'var(--hacker-text-secondary)' }}>UID:</span>
+                            <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                                {props.data.machine_id}
                             </CopyableText>
                         </p>
                     </div>
@@ -229,11 +242,12 @@ const MachineCard = props => {
                     <InfoCPU data={{
                         cpu_model: props.data.cpu_model,
                         cpu_usage: props.data.cpu_usage,
+                        cpu_cores: props.data.cpu_cores,
                         ram_usage: props.data.ram_usage,
                         ram_free: props.data.ram_free,
                         ram_total: props.data.ram_total
                     }} />
-                    <InfoInterfaces data={props.data.ipv4s} onClick={handleInteractiveClick} />
+                    <InfoInterfaces data={props.data.ipv4s} mac_address={props.data.mac_address} onClick={handleInteractiveClick} />
                     <UsersLine users_info={props.data.users_info} onClick={handleInteractiveClick} />
                 </div>
             </div>
@@ -244,7 +258,9 @@ const MachineCard = props => {
                 </div>
             }
 
-            {isEmpty(props.data.gpu_compute_processes) || showDetails || (!isOnline() && !showDetails) ? null :
+            {/* {isEmpty(props.data.gpu_compute_processes) || showDetails || (!isOnline() && !showDetails) ? null : */}
+            {/* {isEmpty(props.data.gpu_compute_processes) || !showDetails || (!isOnline() && showDetails) ? null : */}
+            {isEmpty(props.data.gpu_compute_processes) || !isOnline() ? null :
                 <div className="processes-section mt-2" style={{
                     borderTop: '1px solid var(--hacker-border)',
                     paddingTop: '0.75rem'
@@ -263,7 +279,7 @@ const MachineCard = props => {
                                 letterSpacing: '0.04em',
                                 lineHeight: '1.3'
                             }}>
-                                ACTIVE PROCESSES
+                                ACTIVE GPU COMPUTE
                             </h6>
                             <span className="hacker-badge info" style={{
                                 fontSize: '0.6rem',
@@ -308,7 +324,7 @@ const MachineCard = props => {
 
                                 {/* First line: breathing dot, GPU x and PID */}
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                    <div style={{
+                                    {/* <div style={{
                                         width: '6px',
                                         height: '6px',
                                         borderRadius: '50%',
@@ -316,7 +332,49 @@ const MachineCard = props => {
                                         opacity: 0.8,
                                         flexShrink: 0,
                                         animation: 'breathe 2s ease-in-out infinite'
-                                    }}></div>
+                                    }}></div> */}
+                                    {/* <span style={{
+                                        color: 'var(--hacker-info)',
+                                        fontSize: '0.7rem',
+                                        fontWeight: '700',
+                                        lineHeight: '1.2',
+                                        letterSpacing: '0.015em',
+                                        opacity: 0.8
+                                    }}>
+                                        GPU {process.gpu_index}
+                                    </span> */}
+                                    {/* <span style={{
+                                        color: 'var(--hacker-text-secondary)',
+                                        fontSize: '0.6rem',
+                                        fontWeight: '600',
+                                        lineHeight: '1.2'
+                                    }}>•</span> */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                                        <span style={{
+                                            color: 'var(--hacker-text-secondary)',
+                                            fontSize: '0.7rem',
+                                            fontWeight: '600',
+                                            lineHeight: '1.2',
+                                            letterSpacing: '0.015em',
+                                            opacity: 0.7
+                                        }}>PROC</span>
+                                        <CopyableText style={{
+                                            color: 'var(--hacker-text-accent)',
+                                            fontSize: '0.7rem',
+                                            fontWeight: '600',
+                                            lineHeight: '1.2',
+                                            letterSpacing: '0.015em',
+                                            opacity: 0.7
+                                        }} onClick={handleInteractiveClick}>
+                                            {process.pid}
+                                        </CopyableText>
+                                    </div>
+                                    <span style={{
+                                        color: 'var(--hacker-text-secondary)',
+                                        fontSize: '0.6rem',
+                                        fontWeight: '600',
+                                        lineHeight: '1.2'
+                                    }}>on</span>
                                     <span style={{
                                         color: 'var(--hacker-info)',
                                         fontSize: '0.7rem',
@@ -327,32 +385,6 @@ const MachineCard = props => {
                                     }}>
                                         GPU {process.gpu_index}
                                     </span>
-                                    <span style={{
-                                        color: 'var(--hacker-text-secondary)',
-                                        fontSize: '0.6rem',
-                                        fontWeight: '600',
-                                        lineHeight: '1.2'
-                                    }}>•</span>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                        <span style={{
-                                            color: 'var(--hacker-text-secondary)',
-                                            fontSize: '0.7rem',
-                                            fontWeight: '600',
-                                            lineHeight: '1.2',
-                                            letterSpacing: '0.015em',
-                                            opacity: 0.7
-                                        }}>PID</span>
-                                        <CopyableText style={{
-                                            color: 'var(--hacker-text-secondary)',
-                                            fontSize: '0.7rem',
-                                            fontWeight: '600',
-                                            lineHeight: '1.2',
-                                            letterSpacing: '0.015em',
-                                            opacity: 0.7
-                                        }} onClick={handleInteractiveClick}>
-                                            {process.pid}
-                                        </CopyableText>
-                                    </div>
                                 </div>
 
                                 {/* Second line: Runtime and username */}
@@ -446,7 +478,7 @@ const MachineCard = props => {
                 </div>
             }
 
-            {isEmpty(props.data.gpu_compute_processes) || !showDetails ? null :
+            {/* {isEmpty(props.data.gpu_compute_processes) || !showDetails ? null :
                 <div className="processes-table mt-2">
                     <h6 style={{
                         color: 'var(--hacker-text-accent)',
@@ -455,7 +487,7 @@ const MachineCard = props => {
                         fontWeight: '700',
                         lineHeight: '1.3',
                         letterSpacing: '0.025em'
-                    }}>DETAILED PROCESSES</h6>
+                    }}>Active GPU Compute Processes</h6>
                     <div style={{
                         overflowX: 'auto',
                         border: '1px solid var(--hacker-border)',
@@ -585,7 +617,7 @@ const MachineCard = props => {
                         </table>
                     </div>
                 </div>
-            }
+            } */}
         </div>
     )
 }
