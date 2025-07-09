@@ -7,22 +7,19 @@ import CopyableText from './CopyableText'
 
 const GpuCard = props => {
     const getUtilizationColor = (percent) => {
-        if (percent < 0.3) return 'var(--hacker-info)'
-        if (percent < 0.7) return 'var(--hacker-warning)'
-        return 'var(--hacker-danger)'
-    }
-
-    const getTemperatureColor = (temp) => {
-        if (temp < 60) return 'var(--hacker-info)'
-        if (temp < 80) return 'var(--hacker-warning)'
-        return 'var(--hacker-danger)'
-    }
-
-    const getMemoryColor = (percent) => {
         if (percent < 0.5) return 'var(--hacker-info)'
-        if (percent < 0.8) return 'var(--hacker-warning)'
-        return 'var(--hacker-danger)'
+        if (percent < 0.9) return 'var(--hacker-warning)'
+        if (percent >= 0.9 && percent <= 1.0) return 'var(--hacker-danger)'
+        return "var(--hacker-text-secondary)"
     }
+
+    const getTemperatureColor = temp => {
+        if (temp < 70) return "var(--hacker-info)";
+        if (temp < 85) return "var(--hacker-warning)";
+        if (temp >= 85) return "var(--hacker-danger)";
+        return "var(--hacker-text-secondary)";
+    };
+
 
     return (
         <div className="hacker-card" style={{
@@ -38,15 +35,16 @@ const GpuCard = props => {
                 paddingBottom: '0.5rem'
             }}>
                 <div className="d-flex align-items-center gap-2">
-                    <div style={{
-                        width: '12px',
-                        height: '12px',
+                    <div className="pulse" style={{
+                        width: '8px',
+                        height: '8px',
                         borderRadius: '50%',
-                        backgroundColor: getUtilizationColor(props.data.gpu_usage),
-                        boxShadow: `0 0 8px ${getUtilizationColor(props.data.gpu_usage)}`
+                        backgroundColor: 'var(--hacker-info)',
+                        boxShadow: `0 0 8px var(--hacker-info)`
+                        // boxShadow: `0 0 8px ${'var(--hacker-info)'}`
                     }}></div>
                     <span style={{
-                        color: 'var(--hacker-text-accent)',
+                        color: 'var(--hacker-info)',
                         fontSize: '0.85rem',
                         fontWeight: '600'
                     }}>
@@ -57,10 +55,21 @@ const GpuCard = props => {
                         maxWidth: '200px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
+                        // color: 'var(--hacker-text-accent)'
                     }}>
+                        {/* {props.data.gpu_name} ({<DisplayRAM ram={props.data.memory_total} />}) */}
                         {props.data.gpu_name}
                     </CopyableText>
+                    {/* <CopyableText className="hacker-badge" style={{
+                        fontSize: '0.7rem',
+                        maxWidth: '200px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                    }}>
+                        {<DisplayRAM ram={props.data.memory_total} />}
+                    </CopyableText> */}
                 </div>
 
                 <div className="d-flex align-items-center gap-2">
@@ -122,7 +131,7 @@ const GpuCard = props => {
                             Memory Utilization
                         </span>
                         <span style={{
-                            color: getMemoryColor(props.data.memory_usage),
+                            color: getUtilizationColor(props.data.memory_usage),
                             fontSize: '0.75rem',
                             fontWeight: '600'
                         }}>
@@ -139,7 +148,7 @@ const GpuCard = props => {
                         <div style={{
                             width: `${props.data.memory_usage * 100}%`,
                             height: '100%',
-                            backgroundColor: getMemoryColor(props.data.memory_usage),
+                            backgroundColor: getUtilizationColor(props.data.memory_usage),
                             borderRadius: '3px',
                             transition: 'width 0.3s ease'
                         }}></div>
@@ -147,7 +156,7 @@ const GpuCard = props => {
                 </div>
 
                 {/* Memory Details */}
-                <div className="memory-details" style={{
+                {/* <div className="memory-details" style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr 1fr',
                     gap: '0.5rem',
@@ -204,23 +213,7 @@ const GpuCard = props => {
                             <DisplayRAM ram={props.data.memory_total} />
                         </div>
                     </div>
-                    <div className="memory-item">
-                        <div style={{
-                            color: 'var(--hacker-text-secondary)',
-                            fontSize: '0.65rem',
-                            marginBottom: '0.2rem'
-                        }}>
-                            Efficiency
-                        </div>
-                        <div style={{
-                            color: props.data.memory_usage > 0.8 ? 'var(--hacker-warning)' : 'var(--hacker-success)',
-                            fontSize: '0.7rem',
-                            fontWeight: '600'
-                        }}>
-                            {((props.data.memory_total - props.data.memory_free) / props.data.memory_total * 100).toFixed(1)}%
-                        </div>
-                    </div>
-                </div>
+                </div> */}
 
                 {/* Performance Indicators */}
                 <div className="performance-indicators mt-2" style={{
@@ -235,6 +228,51 @@ const GpuCard = props => {
                         borderRadius: '0.25rem',
                         fontSize: '0.65rem'
                     }}>
+                        <div style={{ color: 'var(--hacker-text-secondary)' }}>Total</div>
+                        <div style={{
+                            color: getUtilizationColor(props.data.gpu_usage),
+                            fontWeight: '600'
+                        }}>
+                            <DisplayRAM ram={props.data.memory_total} />
+                        </div>
+                    </div>
+                    <div className="indicator" style={{
+                        padding: '0.3rem 0.5rem',
+                        backgroundColor: 'var(--hacker-bg)',
+                        border: '1px solid var(--hacker-border)',
+                        borderRadius: '0.25rem',
+                        fontSize: '0.65rem'
+                    }}>
+                        <div style={{ color: 'var(--hacker-text-secondary)' }}>Free</div>
+                        <div style={{
+                            color: getUtilizationColor(props.data.gpu_usage),
+                            fontWeight: '600'
+                        }}>
+                            <DisplayRAM ram={props.data.memory_free} />
+                        </div>
+                    </div>
+                    <div className="indicator" style={{
+                        padding: '0.3rem 0.5rem',
+                        backgroundColor: 'var(--hacker-bg)',
+                        border: '1px solid var(--hacker-border)',
+                        borderRadius: '0.25rem',
+                        fontSize: '0.65rem'
+                    }}>
+                        <div style={{ color: 'var(--hacker-text-secondary)' }}>Used</div>
+                        <div style={{
+                            color: getUtilizationColor(props.data.gpu_usage),
+                            fontWeight: '600'
+                        }}>
+                            <DisplayRAM ram={props.data.memory_total - props.data.memory_free} />
+                        </div>
+                    </div>
+                    {/* <div className="indicator" style={{
+                        padding: '0.3rem 0.5rem',
+                        backgroundColor: 'var(--hacker-bg)',
+                        border: '1px solid var(--hacker-border)',
+                        borderRadius: '0.25rem',
+                        fontSize: '0.65rem'
+                    }}>
                         <div style={{ color: 'var(--hacker-text-secondary)' }}>Core</div>
                         <div style={{
                             color: getUtilizationColor(props.data.gpu_usage),
@@ -242,8 +280,8 @@ const GpuCard = props => {
                         }}>
                             {(props.data.gpu_usage * 100).toFixed(0)}%
                         </div>
-                    </div>
-                    <div className="indicator" style={{
+                    </div> */}
+                    {/* <div className="indicator" style={{
                         padding: '0.3rem 0.5rem',
                         backgroundColor: 'var(--hacker-bg)',
                         border: '1px solid var(--hacker-border)',
@@ -257,8 +295,8 @@ const GpuCard = props => {
                         }}>
                             {(props.data.memory_usage * 100).toFixed(0)}%
                         </div>
-                    </div>
-                    <div className="indicator" style={{
+                    </div> */}
+                    {/* <div className="indicator" style={{
                         padding: '0.3rem 0.5rem',
                         backgroundColor: 'var(--hacker-bg)',
                         border: '1px solid var(--hacker-border)',
@@ -272,7 +310,7 @@ const GpuCard = props => {
                         }}>
                             {props.data.temperature}°C
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

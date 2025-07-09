@@ -860,7 +860,7 @@ const PageMain = () => {
                             <div className="d-flex align-items-center">
                                 <label className="form-check-label me-2" style={{
                                     color: 'var(--hacker-text-secondary)',
-                                    fontSize: '0.85rem',
+                                    fontSize: '0.8rem',
                                     fontWeight: '600',
                                     minWidth: '80px'
                                 }}>
@@ -876,7 +876,7 @@ const PageMain = () => {
                                         color: 'var(--hacker-text-primary)',
                                         padding: '0.375rem 0.75rem',
                                         borderRadius: '0.25rem',
-                                        fontSize: '0.8rem',
+                                        fontSize: '0.7rem',
                                         fontFamily: 'var(--hacker-font-mono)',
                                         fontWeight: '600',
                                         letterSpacing: '0.02em',

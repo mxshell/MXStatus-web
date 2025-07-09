@@ -64,7 +64,7 @@
 
 /* Custom Container */
 .hacker-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 0.75rem;
   transition: var(--hacker-transition);
@@ -258,30 +258,40 @@
   display: grid;
   gap: 0.75rem;
   grid-template-columns: 1fr;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 360px) {
+  .gpu-section {
+    gap: 0.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .gpu-section {
+    gap: 0.2rem;
+  }
 }
 
 @media (min-width: 768px) {
   .gpu-section {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1080px) {
   .gpu-section {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
   }
 }
 
-/* Responsive GPU section */
-@media (max-width: 768px) {
+@media (min-width: 1400px) {
   .gpu-section {
-    gap: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .gpu-section {
-    gap: 0.4rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
   }
 }
 
@@ -403,9 +413,9 @@
     overflow-x: auto;
   }
   
-  .processes-table table {
+  /* .processes-table table {
     min-width: 600px;
-  }
+  } */
   
   /* Better touch targets */
   .hacker-badge {

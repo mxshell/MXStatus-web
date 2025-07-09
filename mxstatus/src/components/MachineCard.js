@@ -122,7 +122,10 @@ const MachineCard = props => {
         }} >
             <div className="server-header d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center gap-2">
-                    <h3 className="mb-0" style={{
+                    <h3 className="mb-0" onClick={(e) => {
+                        e.stopPropagation()
+                        handleShowDetails()
+                    }} style={{
                         color: getStatusColor(),
                         fontSize: '1.3rem',
                         fontWeight: '800',
@@ -180,42 +183,46 @@ const MachineCard = props => {
                 </div>
             </div>
 
-            <div className="row">
-                <div className="col-md-6">
-                    <p className="mb-1">
-                        <span style={{ color: 'var(--hacker-text-secondary)' }}>Last seen:</span>
-                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                            {getTimestamp()}
-                        </CopyableText>
-                    </p>
-                    <p className="mb-1">
-                        <span style={{ color: 'var(--hacker-text-secondary)' }}>Uptime:</span>
-                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                            {props.data.uptime_str}
-                        </CopyableText>
-                    </p>
-                </div>
-                <div className="col-md-6">
-                    <p className="mb-1">
-                        <span style={{ color: 'var(--hacker-text-secondary)' }}>Arch:</span>
-                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                            {props.data.architecture}
-                        </CopyableText>
-                    </p>
-                    <p className="mb-1">
-                        <span style={{ color: 'var(--hacker-text-secondary)' }}>System:</span>
-                        <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
-                            {props.data.linux_distro}
-                        </CopyableText>
-                    </p>
-                </div>
-            </div>
+
 
             <div className={`details-anim${showDetails ? ' expanded' : ' collapsed'}`}>
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <p className="mb-1">
+                            <span style={{ color: 'var(--hacker-text-secondary)' }}>Last seen:</span>
+                            <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                                {getTimestamp()}
+                            </CopyableText>
+                        </p>
+                        <p className="mb-1">
+                            <span style={{ color: 'var(--hacker-text-secondary)' }}>Uptime:</span>
+                            <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                                {props.data.uptime_str}
+                            </CopyableText>
+                        </p>
+                    </div>
+                    <div className="col-md-6">
+                        <p className="mb-1">
+                            <span style={{ color: 'var(--hacker-text-secondary)' }}>Arch:</span>
+                            <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                                {props.data.architecture}
+                            </CopyableText>
+                        </p>
+                        <p className="mb-1">
+                            <span style={{ color: 'var(--hacker-text-secondary)' }}>System:</span>
+                            <CopyableText className="hacker-badge ms-2" onClick={handleInteractiveClick}>
+                                {props.data.linux_distro}
+                            </CopyableText>
+                        </p>
+                    </div>
+                </div>
+
+
                 <div className="server-details" style={{
-                    borderTop: '1px solid var(--hacker-border)',
+                    // borderTop: '1px solid var(--hacker-border)',
                     paddingTop: '0.75rem',
-                    marginTop: '0.75rem'
+                    // marginTop: '0.5rem',
                 }}>
 
 

@@ -10,7 +10,7 @@ const SingleIP = props => {
             margin: '0 0.25rem'
         }}>
             <CopyableText style={{
-                padding: '0.25rem 0.5rem',
+                padding: '0.2rem 0.45rem',
                 borderRadius: '0.25rem 0 0 0.25rem',
                 fontSize: '0.75rem',
                 fontFamily: 'var(--hacker-font-mono)',
@@ -25,7 +25,7 @@ const SingleIP = props => {
                 {props.name}
             </CopyableText>
             <CopyableText style={{
-                padding: '0.25rem 0.5rem',
+                padding: '0.2rem 0.45rem',
                 borderRadius: '0 0.25rem 0.25rem 0',
                 fontSize: '0.75rem',
                 fontFamily: 'var(--hacker-font-mono)',
