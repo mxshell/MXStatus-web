@@ -66,6 +66,7 @@ const MachineCard = props => {
     const [showDetails, SetShowDetails] = useState(false)
     const [showGPUs, SetShowGPUs] = useState(false)
     const [showActiveGCP, SetShowActiveGCP] = useState(false) // GCP: GPU Compute Processes
+    const [isHiding, setIsHiding] = useState(false)
 
     const handleShowDetails = () => {
         SetShowDetails((state) => {
@@ -106,6 +107,18 @@ const MachineCard = props => {
         e.stopPropagation()
     }
 
+    // Handle hiding with animation
+    const handleHideWithAnimation = (e) => {
+        e.stopPropagation()
+        setIsHiding(true)
+        // Delay the actual hiding until after animation completes
+        setTimeout(() => {
+            if (props.onHide) {
+                props.onHide()
+            }
+        }, 250) // Match the animation duration (0.25s)
+    }
+
     const isEmpty = (s) => {
         if (s == null || s === undefined || s === "" || s.length === 0) {
             return true
@@ -130,7 +143,7 @@ const MachineCard = props => {
     }
 
     return (
-        <div className="hacker-card fade-in" style={{
+        <div className={`hacker-card ${isHiding ? 'fade-out' : 'fade-in'}`} style={{
             borderLeft: `4px solid ${getStatusColor()}`,
             opacity: isOnline() ? 1 : 0.7
         }} >
@@ -151,7 +164,7 @@ const MachineCard = props => {
                     </h3>
                 </div>
 
-                <div className="d-flex gap-1">
+                <div className="d-flex align-items-center gap-1" style={{ justifyContent: 'flex-end', flex: 1 }}>
                     {/* <CopyableText
                         className="hacker-badge"
                         style={{
@@ -208,6 +221,47 @@ const MachineCard = props => {
                     >
                         {showDetails ? 'HIDE DETAILS' : 'DETAILS'}
                     </button>
+                    {props.onHide && (
+                        <>
+                            <span style={{
+                                display: 'inline-block',
+                                width: '1px',
+                                height: '1.3em',
+                                background: 'var(--hacker-border)',
+                                margin: '0 0.5rem',
+                                opacity: 0.7,
+                                borderRadius: '1px',
+                                alignSelf: 'center',
+                            }} />
+                            <button
+                                onClick={handleHideWithAnimation}
+                                title="Hide this machine"
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '1.8em',
+                                    height: '1.8em',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.1em',
+                                    color: 'var(--hacker-text-secondary)',
+                                    cursor: 'pointer',
+                                    transition: 'background 0.15s, box-shadow 0.15s',
+                                    padding: 0,
+                                    outline: 'none',
+                                }}
+                                onMouseOver={e => { e.currentTarget.style.background = 'rgba(108,117,125,0.10)'; e.currentTarget.style.boxShadow = '0 1px 6px 0 rgba(0,0,0,0.10)'; }}
+                                onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.boxShadow = 'none'; }}
+                                tabIndex={0}
+                                onKeyPress={e => { if (e.key === 'Enter' || e.key === ' ') { handleHideWithAnimation(e); } }}
+                            >
+                                x
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 
