@@ -4,24 +4,11 @@ import { useState } from 'react'
 import InfoInterfaces from './InfoInterfaces'
 import GpuCard from './GpuCard'
 import UsersLine from './UsersLine'
-// import DisplayPercent from './DisplayPercent'
-// import DisplayRAM from './DisplayRAM'
 import CopyableText from './CopyableText'
 import InfoCPU from './InfoCPU'
 
 const MachineCard = props => {
 
-    // const secondsToHms = (d) => {
-    //     d = Number(d);
-    //     let h = Math.floor(d / 3600);
-    //     let m = Math.floor(d % 3600 / 60);
-    //     let s = Math.floor(d % 3600 % 60);
-
-    //     let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-    //     let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-    //     let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-    //     return hDisplay + mDisplay + sDisplay;
-    // }
 
     const secondsToShortString = (x) => {
         x = Number(x);
@@ -77,8 +64,35 @@ const MachineCard = props => {
     }
 
     const [showDetails, SetShowDetails] = useState(false)
+    const [showGPUs, SetShowGPUs] = useState(false)
+    const [showActiveGCP, SetShowActiveGCP] = useState(false) // GCP: GPU Compute Processes
+
     const handleShowDetails = () => {
         SetShowDetails((state) => {
+            if (state) {
+                SetShowGPUs(false)
+                SetShowActiveGCP(false)
+                return false
+            } else {
+                SetShowGPUs(true)
+                SetShowActiveGCP(true)
+                return true
+            }
+        })
+    }
+
+    const handleShowGPUs = () => {
+        SetShowGPUs((state) => {
+            if (state) {
+                return false
+            } else {
+                return true
+            }
+        })
+    }
+
+    const handleShowActiveGCP = () => {
+        SetShowActiveGCP((state) => {
             if (state) {
                 return false
             } else {
@@ -157,13 +171,27 @@ const MachineCard = props => {
                             ONLINE
                         </span>
                     ) : (
-                        <span className="hacker-badge danger">OFFLINE</span>
+                        <span className="hacker-badge danger">
+                            OFFLINE
+                        </span>
                     )}
 
                     {isEmpty(props.data.gpu_status) ? (
                         <span className="hacker-badge">GPU N/A</span>
                     ) : (
-                        <span className="hacker-badge info">GPU x{numItems(props.data.gpu_status)}</span>
+                        <button className="hacker-badge info" onClick={(e) => {
+                            e.stopPropagation()
+                            handleShowGPUs()
+                        }}>GPU x{numItems(props.data.gpu_status)}</button>
+                    )}
+
+                    {isEmpty(props.data.gpu_compute_processes) ? (
+                        <span className="hacker-badge">AGC: 0</span>
+                    ) : (
+                        <button className="hacker-badge success" onClick={(e) => {
+                            e.stopPropagation()
+                            handleShowActiveGCP()
+                        }}>AGC: {numItems(props.data.gpu_compute_processes)}</button>
                     )}
 
                     <button
@@ -252,15 +280,13 @@ const MachineCard = props => {
                 </div>
             </div>
 
-            {isEmpty(props.data.gpu_status) || !showDetails ? null :
+            {isEmpty(props.data.gpu_status) || !showGPUs ? null :
                 <div className="gpu-section mt-2">
                     {props.data.gpu_status.map((gpu_data, idx) => <GpuCard key={idx} data={gpu_data} />)}
                 </div>
             }
 
-            {/* {isEmpty(props.data.gpu_compute_processes) || showDetails || (!isOnline() && !showDetails) ? null : */}
-            {/* {isEmpty(props.data.gpu_compute_processes) || !showDetails || (!isOnline() && showDetails) ? null : */}
-            {isEmpty(props.data.gpu_compute_processes) || !isOnline() ? null :
+            {isEmpty(props.data.gpu_compute_processes) || !showActiveGCP ? null :
                 <div className="processes-section mt-2" style={{
                     borderTop: '1px solid var(--hacker-border)',
                     paddingTop: '0.75rem'
