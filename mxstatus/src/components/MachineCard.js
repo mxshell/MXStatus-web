@@ -6,9 +6,35 @@ import GpuCard from './GpuCard'
 import UsersLine from './UsersLine'
 import CopyableText from './CopyableText'
 import InfoCPU from './InfoCPU'
+import GcpCard from './GcpCard'
 
 const MachineCard = props => {
 
+    const [showDetails, SetShowDetails] = useState(false)
+    const [showGPUs, SetShowGPUs] = useState(false)
+    const [showActiveGCP, SetShowActiveGCP] = useState(false) // GCP: GPU Compute Processes
+    const [isHiding, setIsHiding] = useState(false)
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // UTILITIES
+    ///////////////////////////////////////////////////////////////////////////
+
+    const isEmpty = (s) => {
+        if (s == null || s === undefined || s === "" || s.length === 0) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const numItems = (s) => {
+        if (s == null || s === undefined || s === "" || s.length === 0) {
+            return 0
+        } else {
+            return s.length
+        }
+    }
 
     const secondsToShortString = (x) => {
         x = Number(x);
@@ -63,10 +89,12 @@ const MachineCard = props => {
         return s.replace(/(\r\n|\n|\r)/gm, " ").replace(/\t/g, ' ').trim()
     }
 
-    const [showDetails, SetShowDetails] = useState(false)
-    const [showGPUs, SetShowGPUs] = useState(false)
-    const [showActiveGCP, SetShowActiveGCP] = useState(false) // GCP: GPU Compute Processes
-    const [isHiding, setIsHiding] = useState(false)
+
+    ///////////////////////////////////////////////////////////////////////////
+    // HANDLERS
+    ///////////////////////////////////////////////////////////////////////////
+
+
 
     const handleShowDetails = () => {
         SetShowDetails((state) => {
@@ -119,21 +147,7 @@ const MachineCard = props => {
         }, 250) // Match the animation duration (0.25s)
     }
 
-    const isEmpty = (s) => {
-        if (s == null || s === undefined || s === "" || s.length === 0) {
-            return true
-        } else {
-            return false
-        }
-    }
 
-    const numItems = (s) => {
-        if (s == null || s === undefined || s === "" || s.length === 0) {
-            return 0
-        } else {
-            return s.length
-        }
-    }
 
 
 
@@ -341,7 +355,7 @@ const MachineCard = props => {
             }
 
             {isEmpty(props.data.gpu_compute_processes) || !showActiveGCP ? null :
-                <div className="processes-section mt-2" style={{
+                <div className="mt-2" style={{
                     borderTop: '1px solid var(--hacker-border)',
                     paddingTop: '0.75rem'
                 }}>
@@ -370,189 +384,15 @@ const MachineCard = props => {
                             </span>
                         </div>
                     </div>
-
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: '0.75rem',
-                        marginTop: '0.75rem'
-                    }}>
+                    <div className="gcp-section">
                         {props.data.gpu_compute_processes.map((process, idx) =>
-                            <div key={idx} className="process-item" style={{
-                                padding: '0.75rem',
-                                backgroundColor: 'var(--hacker-bg)',
-                                border: '1px solid var(--hacker-border)',
-                                borderRadius: '0.5rem',
-                                transition: 'var(--hacker-transition)',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.5rem',
-                                minHeight: '120px',
-                                position: 'relative',
-                                overflow: 'hidden'
-                            }}>
-                                {/* Status indicator */}
-                                <div style={{
-                                    position: 'absolute',
-                                    top: '0',
-                                    left: '0',
-                                    right: '0',
-                                    height: '2px',
-                                    backgroundColor: 'var(--hacker-border-light)',
-                                    opacity: 0.6
-                                }}></div>
-
-                                {/* First line: breathing dot, GPU x and PID */}
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                                    {/* <div style={{
-                                        width: '6px',
-                                        height: '6px',
-                                        borderRadius: '50%',
-                                        backgroundColor: 'var(--hacker-info)',
-                                        opacity: 0.8,
-                                        flexShrink: 0,
-                                        animation: 'breathe 2s ease-in-out infinite'
-                                    }}></div> */}
-                                    {/* <span style={{
-                                        color: 'var(--hacker-info)',
-                                        fontSize: '0.7rem',
-                                        fontWeight: '700',
-                                        lineHeight: '1.2',
-                                        letterSpacing: '0.015em',
-                                        opacity: 0.8
-                                    }}>
-                                        GPU {process.gpu_index}
-                                    </span> */}
-                                    {/* <span style={{
-                                        color: 'var(--hacker-text-secondary)',
-                                        fontSize: '0.6rem',
-                                        fontWeight: '600',
-                                        lineHeight: '1.2'
-                                    }}>•</span> */}
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                                        <span style={{
-                                            color: 'var(--hacker-text-secondary)',
-                                            fontSize: '0.7rem',
-                                            fontWeight: '600',
-                                            lineHeight: '1.2',
-                                            letterSpacing: '0.015em',
-                                            opacity: 0.7
-                                        }}>PROC</span>
-                                        <CopyableText style={{
-                                            color: 'var(--hacker-text-accent)',
-                                            fontSize: '0.7rem',
-                                            fontWeight: '600',
-                                            lineHeight: '1.2',
-                                            letterSpacing: '0.015em',
-                                            opacity: 0.7
-                                        }} onClick={handleInteractiveClick}>
-                                            {process.pid}
-                                        </CopyableText>
-                                    </div>
-                                    <span style={{
-                                        color: 'var(--hacker-text-secondary)',
-                                        fontSize: '0.6rem',
-                                        fontWeight: '600',
-                                        lineHeight: '1.2'
-                                    }}>on</span>
-                                    <span style={{
-                                        color: 'var(--hacker-info)',
-                                        fontSize: '0.7rem',
-                                        fontWeight: '700',
-                                        lineHeight: '1.2',
-                                        letterSpacing: '0.015em',
-                                        opacity: 0.8
-                                    }}>
-                                        GPU {process.gpu_index}
-                                    </span>
-                                </div>
-
-                                {/* Second line: Runtime and username */}
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
-                                    <CopyableText style={{
-                                        padding: '0.15rem 0.35rem',
-                                        backgroundColor: 'rgba(108, 117, 125, 0.1)',
-                                        border: '1px solid var(--hacker-text-secondary)',
-                                        borderRadius: '1rem',
-                                        color: 'var(--hacker-text-secondary)',
-                                        fontSize: '0.7rem',
-                                        fontWeight: '600',
-                                        lineHeight: '1.2',
-                                        letterSpacing: '0.02em',
-                                        fontFamily: 'var(--hacker-font-mono)',
-                                        transition: 'var(--hacker-transition)',
-                                        display: 'inline-block',
-                                        opacity: 0.8
-                                    }} onClick={handleInteractiveClick}>
-                                        {process.user}
-                                    </CopyableText>
-                                    <span style={{
-                                        color: 'var(--hacker-text-secondary)',
-                                        fontSize: '0.6rem',
-                                        fontWeight: '600',
-                                        lineHeight: '1.2'
-                                    }}>•</span>
-                                    <div style={{
-                                        padding: '0.15rem 0.35rem',
-                                        backgroundColor: 'transparent',
-                                        border: 'none',
-                                        borderRadius: '0.25rem',
-                                        fontSize: '0.7rem',
-                                        color: 'var(--hacker-warning)',
-                                        fontWeight: '600',
-                                        lineHeight: '1.2',
-                                        letterSpacing: '0.02em',
-                                        fontFamily: 'var(--hacker-font-mono)',
-                                        flexShrink: 0,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.2rem'
-                                    }}>
-                                        {secondsToShortString(process.proc_uptime)}
-                                    </div>
-                                </div>
-
-                                {/* Command section */}
-                                {process.command && (
-                                    <div style={{
-                                        flex: 1,
-                                        display: 'flex',
-                                        alignItems: 'center'
-                                    }}>
-                                        <div style={{
-                                            padding: '0.4rem',
-                                            backgroundColor: 'var(--hacker-surface)',
-                                            border: '1px solid var(--hacker-border)',
-                                            borderRadius: '0.25rem',
-                                            fontSize: '0.65rem',
-                                            fontFamily: 'var(--hacker-font-mono)',
-                                            color: 'var(--hacker-text-secondary)',
-                                            fontWeight: '600',
-                                            lineHeight: '1.3',
-                                            letterSpacing: '0.01em',
-                                            overflow: 'hidden',
-                                            wordBreak: 'break-word',
-                                            minHeight: '2.6rem',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            width: '100%'
-                                        }}>
-                                            <CopyableText
-                                                maxLength={60}
-                                                style={{
-                                                    color: 'var(--hacker-text-secondary)',
-                                                    fontSize: '0.65rem',
-                                                    fontWeight: '600',
-                                                    lineHeight: '1.3'
-                                                }}
-                                                onClick={handleInteractiveClick}
-                                            >
-                                                {singleLine(process.command)}
-                                            </CopyableText>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                            <GcpCard
+                                key={idx}
+                                process={process}
+                                handleInteractiveClick={handleInteractiveClick}
+                                secondsToShortString={secondsToShortString}
+                                singleLine={singleLine}
+                            />
                         )}
                     </div>
                 </div>

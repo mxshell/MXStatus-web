@@ -253,7 +253,7 @@
   }
 }
 
-/* GPU Grid - Double Column Responsive for GPU Listings */
+/* GPU Grid - Multiple Column Responsive for GPU Listings */
 .gpu-section {
   display: grid;
   gap: 0.75rem;
@@ -262,14 +262,28 @@
   margin: 0 auto;
 }
 
+.gcp-section {
+  display: grid;
+  gap: 0.55rem;
+  grid-template-columns: 2fr;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 @media (max-width: 360px) {
   .gpu-section {
+    gap: 0.1rem;
+  }
+  .gcp-section {
     gap: 0.1rem;
   }
 }
 
 @media (min-width: 600px) {
   .gpu-section {
+    gap: 0.2rem;
+  }
+  .gcp-section {
     gap: 0.2rem;
   }
 }
@@ -279,6 +293,10 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 0.9rem;
   }
+  .gcp-section {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
 }
 
 @media (min-width: 1080px) {
@@ -286,12 +304,20 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1.1rem;
   }
+  .gcp-section {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
 }
 
 @media (min-width: 1400px) {
   .gpu-section {
     grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
+  }
+  .gcp-section {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
   }
 }
 
