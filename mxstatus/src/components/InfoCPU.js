@@ -92,7 +92,7 @@ const InfoCPU = props => {
                     overflow: 'hidden'
                 }}>
                     <div style={{
-                        width: `${cpu_usage}%`,
+                        width: `${cpu_usage * 100}%`,
                         height: '100%',
                         backgroundColor: getUtilizationColor(cpu_usage),
                         borderRadius: '3px',
