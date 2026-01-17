@@ -1,4 +1,6 @@
 hidden/
+example_data.json
+
 # Logs
 logs
 *.log

@@ -7,16 +7,37 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: mxstatus
+        env:
+            NODE_OPTIONS: --openssl-legacy-provider
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
+
+            - name: Set up pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  run_install: false
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18
+                  cache: pnpm
+                  cache-dependency-path: mxstatus/pnpm-lock.yaml
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build
+              env:
+                  CI: false
+              run: pnpm run build
+
             - name: Deploy react app to github pages
               run: |
-                  pwd
-                  cd mxstatus
-                  pwd
-                  export NODE_OPTIONS=--openssl-legacy-provider
-                  npm ci
-                  CI=false npm run build
                   git config user.name github-actions
                   git config user.email github-actions@github.com
                   git --work-tree build add --all
