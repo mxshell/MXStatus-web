@@ -7,6 +7,7 @@ import UsersLine from './UsersLine'
 import CopyableText from './CopyableText'
 import InfoCPU from './InfoCPU'
 import GcpCard from './GcpCard'
+import DiskInfo from './DiskInfo'
 
 const MachineCard = props => {
 
@@ -343,6 +344,7 @@ const MachineCard = props => {
                         ram_free: props.data.ram_free,
                         ram_total: props.data.ram_total
                     }} />
+                    <DiskInfo disks={props.data.disk_info} />
                     <InfoInterfaces data={props.data.ipv4s} mac_address={props.data.mac_address} onClick={handleInteractiveClick} />
                     <UsersLine users_info={props.data.users_info} onClick={handleInteractiveClick} />
                 </div>

@@ -321,6 +321,68 @@
   }
 }
 
+/* Disk Info Layout */
+.disk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.6rem;
+}
+
+.disk-card {
+  background: var(--hacker-bg);
+  border: 1px solid var(--hacker-border);
+  border-radius: 0.45rem;
+  padding: 0.6rem;
+  transition: var(--hacker-transition);
+  box-shadow: inset 0 0 0 1px rgba(0, 255, 65, 0.02);
+}
+
+.disk-card:hover {
+  border-color: var(--hacker-text-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 255, 65, 0.12), 0 2px 8px rgba(0, 255, 65, 0.08);
+}
+
+.disk-usage-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--hacker-border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0.35rem 0 0.4rem 0;
+}
+
+.disk-usage-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.disk-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+@media (max-width: 480px) {
+  .disk-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .disk-card {
+    padding: 0.55rem;
+  }
+  
+  .disk-stats-row {
+    flex-wrap: wrap;
+    gap: 0.3rem 0.6rem;
+  }
+}
+
 /* Pulse Animation */
 @keyframes pulse {
   0%, 100% {
